@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import api from "./api/api";
 import { authuser, load, unauthorize } from "./redux/reducers/authReducers";
 import Loader from "./views/components/Loader";
-
+import axios from 'axios'
 
 
 function App() {
@@ -21,7 +21,13 @@ function App() {
     }
   }
 
+  const rootFetch = async () => {
+    const { data } = await axios.get('https://darkshop-ecommerce-server.vercel.app/')
+    console.log('✅get fetch dashboard', data)
+  }
+
   useEffect(() => {
+    rootFetch()
     const token = localStorage.getItem('ds-token')
     console.log('app.jsx', token, data)
     token ? !data && authUser(token) : unauthorize()

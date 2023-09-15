@@ -26,7 +26,6 @@ export const get_product = createAsyncThunk('product/get_product', async () => {
 
 
 export const single_get_product = createAsyncThunk('product/single_get_product', async (id) => {
-    console.log('hi', id)
     const token = localStorage.getItem('ds-token')
     if (token) {
         const { data, status } = await api.get(`/v3/single-get-product/${id}`, { headers: { Authorization: `Bearer ${token}` } })

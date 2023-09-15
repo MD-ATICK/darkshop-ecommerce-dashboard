@@ -6,7 +6,6 @@ export const add_category = createAsyncThunk('category/add_category', async (cat
     const token = localStorage.getItem('ds-token')
     if (token) {
         const { data, status } = await api.post('/v2/add-category', cateInfo, { headers: { Authorization: `Bearer ${token}` } })
-        console.log(data)
         return { data, status }
     } else {
         console.log('token error in redux.')
