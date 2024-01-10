@@ -3,7 +3,7 @@ import api from "../../api/api";
 
 
 export const admin_Login = createAsyncThunk('auth/admin_Login', async (loginInfo) => {
-    const { data, status } = await api.post('/v1/admin-login', loginInfo, { withCredentials: true })
+    const { data, status } = await api.post('/v1/admin-login', loginInfo)
 
     return { data, status }
 })
