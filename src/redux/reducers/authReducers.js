@@ -3,13 +3,13 @@ import api from "../../api/api";
 
 
 export const admin_Login = createAsyncThunk('auth/admin_Login', async (loginInfo) => {
-    const { data, status } = await api.post('/admin-login', loginInfo, { withCredentials: true })
+    const { data, status } = await api.post('/v1/admin-login', loginInfo, { withCredentials: true })
 
     return { data, status }
 })
 
 export const seller_register = createAsyncThunk('auth/seller_register', async (registerinfo) => {
-    const { data, status } = await api.post('/seller-register', registerinfo, { withCredentials: true })
+    const { data, status } = await api.post('/v1/seller-register', registerinfo, { withCredentials: true })
 
     return { data, status }
 })
