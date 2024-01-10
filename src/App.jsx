@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { toast } from "react-toastify";
 import io from "socket.io-client";
 import api from "./api/api";
 import AdminLogin from "./auth/AdminLogin";
@@ -9,10 +10,11 @@ import Register from "./auth/Register";
 import Loader from "./components/Loader";
 import Home from "./pages/Home";
 import {
-  authuser,
-  load,
-  rootFetch,
-  unauthorize
+	authuser,
+	load,
+	logout,
+	rootFetch,
+	unauthorize,
 } from "./redux/reducers/authReducers";
 import AllRouters from "./router/Router";
 
@@ -24,12 +26,23 @@ function App() {
 	const { loading, data } = useSelector(state => state.auth);
 
 	const authUser = async token => {
-		dispatch(load());
-		const { data, status } = await api.get("/v1/get-user", {
-			headers: { Authorization: `Bearer ${token}` },
-		});
-		if (status === 200) {
-			dispatch(authuser({ data, status }));
+		try {
+			dispatch(load());
+			const { data, status } = await api.get("/v1/get-user", {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+			console.log("fetch me 😐", status, data);
+			if (status === 200) {
+				dispatch(authuser({ data, status }));
+			} else if (status === 223) {
+				dispatch(authuser({ data: "", status: 223 }));
+				localStorage.removeItem("ds-token");
+				dispatch(logout());
+				<Navigate to={"/"} />;
+				toast.error("token is expried again login.");
+			}
+		} catch (error) {
+			console.log("error is here authUser.");
 		}
 	};
 
@@ -40,7 +53,7 @@ function App() {
 
 	useEffect(() => {
 		socket = io("https://darkshop-ecommerce-sever-side.onrender.com");
-		// socket = io('http://localhost:4000')
+		// socket = io("http://localhost:4000");
 		dispatch(rootFetch());
 
 		if (data && socket) {
@@ -48,6 +61,7 @@ function App() {
 		}
 
 		if (token && !data) {
+			console.log("app.js 51", token);
 			authUser(token);
 		} else {
 			unauthorize();

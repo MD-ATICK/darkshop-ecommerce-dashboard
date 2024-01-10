@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import Loader from '../components/Loader'
-import MainLayout from '../layout/MainLayout';
-import TypeWriterComponent from 'typewriter-effect';
-import { FaUserTie } from 'react-icons/fa'
-import { RiAdminFill } from 'react-icons/ri'
+import React, { useEffect, useState } from 'react';
+import { FaUserTie } from 'react-icons/fa';
+import { MdDashboard } from 'react-icons/md';
+import { RiAdminFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
-import { MdDashboard } from 'react-icons/md'
-import { sellerLogin } from '../redux/reducers/authReducers';
-import api from '../api/api';
+import { Link, useNavigate } from 'react-router-dom';
+import TypeWriterComponent from 'typewriter-effect';
 
 function Home() {
 
@@ -51,7 +47,6 @@ function Home() {
 
   useEffect(() => {
     // const directDash = localStorage.getItem('directDash')
-    // !loading && data && directDash && directDash === 'true' ? navigate(data.user.role === 'seller' ? '/seller/dashboard' : '/admin/dashboard') : !loading && data && directDash && localStorage.setItem('directDash', 'false')
     data && navigate(data.user.role === 'seller' ? '/seller/dashboard' : '/admin/dashboard')
   }, [data]);
 
